@@ -1,1 +1,8 @@
-ascii-art-web
+# Go
+*.test
+*.out
+/ascii-art-web
+.env
+.DS_Store
+.vscode/
+.idea/

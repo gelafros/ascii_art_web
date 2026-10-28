@@ -350,6 +350,62 @@ input[type="color"] {
 
 .empty-warning.visible { display: flex; }
 
+/* ── Primary submit button ── */
+.generate-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: calc(var(--r) + 2px);
+    padding: 0.82rem 1rem;
+    margin-top: 0.45rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    background:
+        linear-gradient(180deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.08)),
+        rgba(255, 255, 255, 0.04);
+    cursor: pointer;
+    transition: transform 0.15s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease), background 0.18s var(--ease);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
+.generate-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(167, 139, 250, 0.55);
+    background:
+        linear-gradient(180deg, rgba(139, 92, 246, 0.28), rgba(139, 92, 246, 0.12)),
+        rgba(255, 255, 255, 0.06);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 16px 30px rgba(10, 14, 24, 0.34);
+}
+
+.generate-btn:active {
+    transform: translateY(0);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 8px 18px rgba(10, 14, 24, 0.24);
+}
+
+.generate-btn:focus-visible {
+    outline: none;
+    border-color: rgba(167, 139, 250, 0.75);
+    box-shadow:
+        0 0 0 3px rgba(139, 92, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 12px 26px rgba(0, 0, 0, 0.28);
+}
+
 /* ── Divider ── */
 .divider {
     border: none;
@@ -409,6 +465,8 @@ input[type="color"] {
 
 .copy-btn:hover  { background: rgba(139,92,246,0.12); color: var(--text); border-color: var(--accent); }
 .copy-btn.copied { color: var(--success); border-color: rgba(52,211,153,0.4); background: rgba(52,211,153,0.08); }
+.copy-btn:disabled { cursor: wait; opacity: 0.7; }
+.export-format { min-width: 5.75rem; }
 
 /* ── Output block ──
    Dark enough background so ANY color is readable against it.
