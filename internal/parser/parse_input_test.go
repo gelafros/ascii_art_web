@@ -6,6 +6,8 @@ import (
 )
 
 func TestParseInput_NoArgs(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd"}
 	_, err := ParseInput()
 	if err == nil {
@@ -14,6 +16,8 @@ func TestParseInput_NoArgs(t *testing.T) {
 }
 
 func TestParseInput_SingleArg(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "Hello"}
 	result, err := ParseInput()
 	if err != nil {
@@ -25,6 +29,8 @@ func TestParseInput_SingleArg(t *testing.T) {
 }
 
 func TestParseInput_TwoArgsBanner(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "Hello", "shadow"}
 	result, err := ParseInput()
 	if err != nil {
@@ -36,6 +42,8 @@ func TestParseInput_TwoArgsBanner(t *testing.T) {
 }
 
 func TestParseInput_NewlineConversion(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "Hello\\nWorld"}
 	result, err := ParseInput()
 	if err != nil {
@@ -47,6 +55,8 @@ func TestParseInput_NewlineConversion(t *testing.T) {
 }
 
 func TestParseInput_EmptyString(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", ""}
 	result, err := ParseInput()
 	if err != nil {
@@ -58,6 +68,8 @@ func TestParseInput_EmptyString(t *testing.T) {
 }
 
 func TestParseInput_ColorWholeString(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "--color=red", "Hello"}
 	result, err := ParseInput()
 	if err != nil {
@@ -69,6 +81,8 @@ func TestParseInput_ColorWholeString(t *testing.T) {
 }
 
 func TestParseInput_ColorSubstring(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "--color=red", "kit", "a king"}
 	result, err := ParseInput()
 	if err != nil {
@@ -80,6 +94,8 @@ func TestParseInput_ColorSubstring(t *testing.T) {
 }
 
 func TestParseInput_ColorBanner(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "--color=blue", "Hello", "shadow"}
 	result, err := ParseInput()
 	if err != nil {
@@ -91,6 +107,8 @@ func TestParseInput_ColorBanner(t *testing.T) {
 }
 
 func TestParseInput_ColorSubstringBanner(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "--color=green", "kit", "a king", "standard"}
 	result, err := ParseInput()
 	if err != nil {
@@ -102,6 +120,8 @@ func TestParseInput_ColorSubstringBanner(t *testing.T) {
 }
 
 func TestParseInput_InvalidFlagFormat(t *testing.T) {
+	origArgs := os.Args
+	t.Cleanup(func() { os.Args = origArgs })
 	os.Args = []string{"cmd", "--color", "Hello"}
 	_, err := ParseInput()
 	if err == nil {

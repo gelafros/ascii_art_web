@@ -52,4 +52,14 @@ func TestParseColor_Invalid(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error for unknown color")
 	}
+
+	_, err = ParseColor("rgb(-1, 0, 0)")
+	if err == nil {
+		t.Error("Expected error for negative rgb component")
+	}
+
+	_, err = ParseColor("hsl(-10, 50%, 50%)")
+	if err == nil {
+		t.Error("Expected error for negative hsl component")
+	}
 }

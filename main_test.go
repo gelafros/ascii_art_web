@@ -318,3 +318,54 @@ func TestExportHandlerInvalidFormat(t *testing.T) {
 	}
 	assertContentLength(t, rr)
 }
+
+func TestHomeHandlerSuccessAndRouting(t *testing.T) {
+	// Valid GET /
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rr := httptest.NewRecorder()
+	homeHandler(rr, req)
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected status 200 for GET /, got %d", rr.Code)
+	}
+	assertContentLength(t, rr)
+
+	// Unrecognized path -> 404
+	req404 := httptest.NewRequest(http.MethodGet, "/unknown", nil)
+	rr404 := httptest.NewRecorder()
+	homeHandler(rr404, req404)
+	if rr404.Code != http.StatusNotFound {
+		t.Fatalf("expected status 404 for unknown path, got %d", rr404.Code)
+	}
+
+	// Non-GET on / -> 400
+	reqPost := httptest.NewRequest(http.MethodPost, "/", nil)
+	rrPost := httptest.NewRecorder()
+	homeHandler(rrPost, reqPost)
+	if rrPost.Code != http.StatusBadRequest {
+		t.Fatalf("expected status 400 for POST /, got %d", rrPost.Code)
+	}
+}
+
+func TestASCIIArtHandlerValidationErrors(t *testing.T) {
+	// Non-ASCII character
+	reqNonASCII := newASCIIArtFormRequest("application/json", url.Values{
+		"text":   {"Hello 🚀"},
+		"banner": {"standard"},
+	})
+	rrNonASCII := httptest.NewRecorder()
+	asciiArtHandler(rrNonASCII, reqNonASCII)
+	if rrNonASCII.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400 for non-ASCII input, got %d", rrNonASCII.Code)
+	}
+
+	// Input exceeding max length
+	reqTooLong := newASCIIArtFormRequest("application/json", url.Values{
+		"text":   {strings.Repeat("A", maxInputLength+1)},
+		"banner": {"standard"},
+	})
+	rrTooLong := httptest.NewRecorder()
+	asciiArtHandler(rrTooLong, reqTooLong)
+	if rrTooLong.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400 for input exceeding max length, got %d", rrTooLong.Code)
+	}
+}
