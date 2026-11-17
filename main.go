@@ -139,6 +139,8 @@ func asciiArtHandler(w http.ResponseWriter, r *http.Request) {
 	renderPage(w, http.StatusOK, pageData)
 }
 
+// exportHandler processes POST /export requests and streams downloadable ASCII art files
+// in TXT, HTML, or JSON format with explicit Content-Type, Content-Length, and Content-Disposition headers.
 func exportHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		writePlainText(w, http.StatusBadRequest, "400 Bad Request")

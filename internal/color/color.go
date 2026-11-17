@@ -164,7 +164,7 @@ func parseRGBColor(rgb string) (Color, error) {
 		return Color{}, fmt.Errorf("invalid rgb color")
 	}
 
-	if r > 255 || g > 255 || b > 255 {
+	if r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 {
 		return Color{}, fmt.Errorf("invalid rgb color")
 	}
 
@@ -196,7 +196,7 @@ func parseHSLColor(hsl string) (Color, error) {
 		return Color{}, fmt.Errorf("invalid hsl color")
 	}
 
-	if h > 360 || s > 100 || l > 100 {
+	if h < 0 || h > 360 || s < 0 || s > 100 || l < 0 || l > 100 {
 		return Color{}, fmt.Errorf("invalid hsl color")
 	}
 

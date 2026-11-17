@@ -44,14 +44,28 @@ func RenderArtColor(w io.Writer, input string, banner []string, colorStr string,
 // printLine renders a single logical line of text as 8 rows of ASCII art using the provided banner.
 func printLine(w io.Writer, text string, banner []string) {
 	for row := 0; row < 8; row++ {
-		lineOut := ""
+		var sb strings.Builder
 		for _, char := range text {
 			index := int(char-32)*9 + 1 + row
 			if index >= 0 && index < len(banner) {
-				lineOut += banner[index]
+				sb.WriteString(banner[index])
 			}
 		}
-		fmt.Fprintln(w, lineOut)
+		fmt.Fprintln(w, sb.String())
+	}
+}
+
+// printLineEscaped renders a single logical line of text as 8 rows of HTML-escaped ASCII art.
+func printLineEscaped(w io.Writer, text string, banner []string) {
+	for row := 0; row < 8; row++ {
+		var sb strings.Builder
+		for _, char := range text {
+			index := int(char-32)*9 + 1 + row
+			if index >= 0 && index < len(banner) {
+				sb.WriteString(html.EscapeString(banner[index]))
+			}
+		}
+		fmt.Fprintln(w, sb.String())
 	}
 }
 
@@ -106,7 +120,7 @@ func RenderArtHTML(w io.Writer, input string, banner []string, colorStr string, 
 		if line == "" {
 			fmt.Fprintln(w)
 		} else if colorStr == "" {
-			printLine(w, line, banner)
+			printLineEscaped(w, line, banner)
 		} else {
 			printLineHTML(w, line, banner, colorStr, colorSubstr)
 		}
@@ -117,7 +131,7 @@ func RenderArtHTML(w io.Writer, input string, banner []string, colorStr string, 
 func printLineHTML(w io.Writer, text string, banner []string, colorStr string, colorSubstr string) {
 	_, err := color.ParseColor(colorStr)
 	if err != nil {
-		printLine(w, text, banner)
+		printLineEscaped(w, text, banner)
 		return
 	}
 
@@ -157,10 +171,6 @@ func findColoredCharIndices(text string, substr string) map[int]bool {
 	}
 
 	substrLen := len(substr)
-	if substrLen == 0 {
-		return colored
-	}
-
 	for i := 0; i <= len(text)-substrLen; i++ {
 		if text[i:i+substrLen] == substr {
 			for j := 0; j < substrLen; j++ {

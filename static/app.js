@@ -142,12 +142,10 @@
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
                 navigator.clipboard.writeText(getCurrentArtText()).then(() => {
-                    copyBtn.textContent = '✓ Copied!';
-                    copyBtn.classList.add('copied');
-                    setTimeout(() => {
-                        copyBtn.textContent = '⎘ Copy';
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
+                    flashButtonState(copyBtn, '✓ Copied!', 'copied');
+                }).catch((err) => {
+                    console.error('Failed to copy art:', err);
+                    flashButtonState(copyBtn, '✕ Copy failed');
                 });
             });
         }

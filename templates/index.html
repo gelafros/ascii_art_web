@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/static/layout.css">
 </head>
 <body>
-    <canvas id="matrix-bg"></canvas>
+    <canvas id="matrix-bg" aria-hidden="true"></canvas>
 
     <header>
         <div class="logo-icon" aria-hidden="true">⌨</div>
@@ -63,7 +63,7 @@ o--o</pre>
                 </div>
 
                 <div class="form-group">
-                    <label>Art color <span class="field-hint">(optional)</span></label>
+                    <label for="color-text">Art color <span class="field-hint">(optional)</span></label>
                     <div class="color-row">
                         <div class="color-swatch-wrap" title="Click to open color picker">
                             <input type="color" id="color-picker" value="#8b5cf6" aria-label="Pick a color">
