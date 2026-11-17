@@ -41,7 +41,7 @@ go run .
 **Expected Output:**
 
 ```
-Usage: go run . [COLOR] [SUBSTRING] [STRING] [BANNER]"
+Usage: go run . [OPTION] [STRING] [BANNER]
 ```
 
 **Validation:**

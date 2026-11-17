@@ -1,8 +1,29 @@
-# Go
+# Go binaries and build artifacts
 *.test
 *.out
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 /ascii-art-web
+/ascii_art_web
+/server
+/bin/
+/dist/
+coverage.*
+
+# Environment & logs
 .env
+.env.*
+*.log
+
+# OS & Editor files
 .DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
 .vscode/
 .idea/
+

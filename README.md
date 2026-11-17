@@ -1,5 +1,9 @@
 # ASCII-Art-Web
 
+[![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)](https://go.dev/)
+[![CI](https://github.com/gelafros/ascii_art_web/actions/workflows/ci.yml/badge.svg)](https://github.com/gelafros/ascii_art_web/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 ## Description
 
 ASCII-Art-Web is a web application that converts text into ASCII art using different banner styles. Built with Go and standard library only, it provides a simple web interface to generate artistic text representations in three styles: standard, shadow, and thinkertoy.
@@ -12,11 +16,21 @@ ASCII-Art-Web is a web application that converts text into ASCII art using diffe
 
 ## Usage
 
-### How to Run
+### Prerequisites
 
-1. Ensure Go 1.21 or higher is installed
-2. Navigate to the project directory
-3. Run the server:
+- **Go**: 1.25 or higher (standard library only, zero external dependencies)
+- **Docker** (optional, for containerized deployment)
+
+### Installation & Running Locally
+
+1. Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/gelafros/ascii_art_web.git
+cd ascii_art_web
+```
+
+2. Run the HTTP server:
 
 ```bash
 go run .
@@ -28,19 +42,22 @@ If your environment is missing a C compiler (`gcc`) and `go run .` fails with a 
 CGO_ENABLED=0 go run .
 ```
 
-4. Open your browser and visit: `http://localhost:8080`
-5. Enter text, select a banner style, and click "Generate"
+3. Open your browser and visit `http://localhost:8080`.
+4. Enter text, select a banner style (`standard`, `shadow`, or `thinkertoy`), optionally choose a color and target substring, and click **Generate ASCII Art**.
 
 ### Docker
 
-You can build and run the project with plain Docker commands from the project root:
+You can build and run the project using the included [`docker.sh`](docker.sh) helper script or plain Docker commands from the project root:
 
 ```bash
+# Using the helper script
+./docker.sh build
+./docker.sh run
+
+# Or using plain Docker commands
 docker image build -t ascii-art-web-docker .
 docker container run -d -p 8080:8080 --name dockerize ascii-art-web-docker
 ```
-
-The final `.` passes the current directory as the Docker build context.
 
 Useful follow-up commands:
 
@@ -53,37 +70,19 @@ docker stop dockerize
 docker rm dockerize
 ```
 
-For the full manual Docker workflow, see [`docs/DOCKER.md`](docs/DOCKER.md).
-
 ## Testing
 
-### Unit Tests
-
-Run the unit tests for the web handlers:
+Run the full unit test suite across all packages (handlers, banner loader, parser, color converter, and renderer):
 
 ```bash
-go test .
+go test -v ./...
 ```
 
-### Docker Integration Tests
-
-Comprehensive integration tests for the Docker containerization:
+Run static analysis (`go vet`):
 
 ```bash
-# Run all Docker integration tests (handles permissions automatically)
-./run_docker_tests.sh
-
-# Or run directly (requires Docker permissions)
-./docker_integration_test.sh
+go vet ./...
 ```
-
-These tests verify:
-- ✅ Docker build success
-- ✅ Best practices (linting, security)
-- ✅ Runtime health (container stays alive)
-- ✅ Port accessibility (web server responds)
-
-See [docs/DOCKER_INTEGRATION_TESTS.md](docs/DOCKER_INTEGRATION_TESTS.md) for detailed documentation.
 
 ### Features
 
@@ -200,10 +199,18 @@ ascii-art-web/
 ├── asciiart/           # Public library
 │   └── asciiart.go
 ├── internal/           # Internal packages
-│   ├── banner/
-│   ├── parser/
-│   └── render/
+│   ├── banner/         # Banner file loading and normalization
+│   ├── color/          # ANSI, Hex, RGB, and HSL color parsing
+│   ├── generator/      # Shared plain/HTML generation orchestration
+│   ├── parser/         # Input argument parsing
+│   └── render/         # ASCII art and HTML rendering
+├── docs/               # Architecture and golden test specifications
+│   ├── architecture.MD
+│   └── golden_tests.md
+├── Dockerfile          # Multi-stage Docker build
+├── docker.sh           # Docker helper script
 ├── main.go             # Server entry point
+├── main_test.go        # HTTP handler unit tests
 └── go.mod              # Go module
 ```
 
